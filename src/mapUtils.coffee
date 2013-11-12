@@ -2,7 +2,7 @@ exports.strRepeat = (str, nb) ->
 	new Array(nb+1).join(str)
 
 lpad = (str, pad, len) ->
-	(if str.length < len then strRepeat(pad, len-str.length) else "")+str
+	(if str.length < len then exports.strRepeat(pad, len-str.length) else "")+str
 
 exports.toHTML = (str) ->
 	str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')

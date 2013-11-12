@@ -1,2 +1,2 @@
-exports.SVG = require './SVG.coffee'
-exports.mapUtils = require './mapUtils.coffee'
+exports.generateMap = (require './generateMap').generateMap
+exports.mapUtils = require './mapUtils'

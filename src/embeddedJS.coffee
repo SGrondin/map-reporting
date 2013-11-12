@@ -1,4 +1,4 @@
-exports.getEmbeddedJS = () ->
+exports.getEmbeddedJS = (labels) ->
 	"""
 	\n<![CDATA[\n
 		var usingAlternateColor = false;
@@ -10,8 +10,8 @@ exports.getEmbeddedJS = () ->
 		function displayShapeInDashboard(shape){
 			document.getElementById("dashboardTitle").firstChild.nodeValue = shape.getAttribute("id")+" "+shape.getAttribute("name");
 			document.getElementById("dashboardLink").setAttribute("xlink:href", shape.getAttribute("link").replace(/&/g, "%26"));
-			document.getElementById("dashboardLinkText").firstChild.nodeValue = "View loops";
-			document.getElementById("dashboardSatisfaction").firstChild.nodeValue = "Satisfaction: "+shape.getAttribute("value");
+			document.getElementById("dashboardLinkText").firstChild.nodeValue = """+"\""+labels.link+"""";
+			document.getElementById("dashboardSatisfaction").firstChild.nodeValue = """+"\""+labels.value+""": "+shape.getAttribute("value");
 		}
 		function emptyDashboard(){
 			document.getElementById("dashboardTitle").firstChild.nodeValue = "Nothing selected";
