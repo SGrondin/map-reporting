@@ -15,6 +15,7 @@ class exports.SVG
 	setEmbeddedJS: (js) ->
 		embedded = new Node @head, "script", js
 		embedded.setAttributes {"type": "text/javascript"}
+		@
 
 	_addChild: (obj) -> # Don't call directly, use the Node constructor instead
 		@head._addChild obj

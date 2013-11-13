@@ -30,7 +30,6 @@ calculateEllipse = (xa, ya, xb, yb, xc, yc) ->
 	# Calculate angle, basic trigonometry
 	opposite = Math.abs(yb-ycenter)
 	angle = Math.asin(opposite/r1)
-	# console.log toDeg angle
 
 	# Translate center to origin
 	[[xa, ya], [xb, yb], [xc, yc]] = [[xa-xcenter, ya-ycenter], [xb-xcenter, yb-ycenter], [xc-xcenter, yc-ycenter]]
@@ -39,7 +38,7 @@ calculateEllipse = (xa, ya, xb, yb, xc, yc) ->
 	[[xa, ya], [xb, yb], [xc, yc]] = [rotate(xa, ya, angle), rotate(xb, yb, angle), rotate(xc, yc, angle)]
 
 	# xc needs to be on the ellipse for the equation to work no matter which axis is on the x-axis
-	if xc > r1 then [yc, xc] = [cx, yc]
+	if xc > r1 then [yc, xc] = [xc, yc]
 
 	# Isolate r2 in the ellipse's parametric equation
 	t = (Math.pow(xc, 2)/Math.pow(r1, 2))

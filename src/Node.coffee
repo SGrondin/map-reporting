@@ -1,7 +1,7 @@
 mapUtils = require "./mapUtils"
 
 class exports.Node
-	constructor: (@parent, @type, @inner="") -> # Don't call directly, use the Node constructor
+	constructor: (@parent, @type, @inner="") ->
 		@children = []
 		@attributes = {}
 		@parent?._addChild @
@@ -12,7 +12,7 @@ class exports.Node
 			@parent._addChild @
 		@
 
-	_addChild: (obj) ->
+	_addChild: (obj) -> # Don't call directly, use the child Node's constructor
 		@children.push obj
 		@
 

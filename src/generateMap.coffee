@@ -4,15 +4,14 @@ SVG = (require "./SVG").SVG
 Node = (require "./Node").Node
 Shape = (require "./Shape").Shape
 
-shapeFromStr = (str, config) ->
-	[id, link, name, vectors, val] = str.split ";"
-	shape = new Shape id, link, name, val
-	vectors.split(", ").forEach (vector) ->
+shapeFromZone = (zone, config) ->
+	shape = new Shape zone.ID, zone.link, zone.name, zone.value
+	zone.coordinates.split(", ").forEach (vector) ->
 		shape.addVector vector, config.background.x, config.background.y
 	shape
 
 # Config must be an object, Shapes is an array of strings
-exports.generateMap = (config, lines, image) ->
+exports.generateMap = (config, zones, image) ->
 	svg = new SVG()
 	svg.setAttributes {width:config.width, height:config.height}
 	svg.setEmbeddedJS embeddedJS.getEmbeddedJS(config.labels)
@@ -25,8 +24,8 @@ exports.generateMap = (config, lines, image) ->
 			filter:"url(#fdesaturation)"}
 
 	# Adds shapes to SVG
-	for line in lines
-		(shapeFromStr line, config).addToSVG svg, config.scale.initial, config.scale.alternate, config.threshold
+	for zone in zones
+		(shapeFromZone zone, config).addToSVG svg, config.scale.initial, config.scale.alternate, config.threshold, config.IDs
 
 	# Fill pattern
 	pattern = new Node null, "pattern"
@@ -39,7 +38,7 @@ exports.generateMap = (config, lines, image) ->
 	desaturation = new Node null, "filter"
 	desaturation.setAttributes {x:0, y:0}
 	desaturationFilter = new Node desaturation, "feColorMatrix"
-	desaturationFilter.setAttributes {in:"SourceGraphic", type:"saturate", values:config.saturation}
+	desaturationFilter.setAttributes {in:"SourceGraphic", type:"saturate", values:config.background.saturation}
 	svg.addDef desaturation, "desaturation"
 
 	# Scale

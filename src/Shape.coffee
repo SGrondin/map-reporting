@@ -71,7 +71,7 @@ class exports.Shape
 		innerFilter2.setAttributes {offset:"99%", "stop-color":stroke, "stop-opacity":"0.8"}
 		filter
 
-	addToSVG: (svg, initial, alternate, threshold) ->
+	addToSVG: (svg, initial, alternate, threshold, IDconfig) ->
 		# Create node and set its attributes
 		node = new Node svg, "path"
 		node.setAttributes {id:@id, name:@name, link:@link, d:@d+"Z"}
@@ -88,7 +88,7 @@ class exports.Shape
 				initialColor = colors[initial]
 				alternateColor = colors[alternate]
 				stroke = initialColor
-				radialGradient = initial # Could be changed in the future
+				radialGradient = stroke # Could be changed in the future
 				initialFilter = svg.addDef (@createFilter initialColor, initialColor), @id+"initial"
 				alternateFilter = svg.addDef (@createFilter alternateColor, alternateColor), @id+"alternate"
 				node.setAttributes {"fill":"url(#"+initialFilter+")", initialFilter, alternateFilter,\
@@ -114,9 +114,10 @@ class exports.Shape
 		node.setAttributes {onmouseover:"mouseOver(evt);", onmouseout:"mouseOut(evt);", onmousedown:"mouseDown(evt);"}
 
 		# Place id
-		[x, y] = @findCenter()
-		id = new Node svg, "text", @id
-		id.setAttributes {id:"id"+@id, x, y, "font-family":"Courier", "font-size":"32px", fill:"#000000", stroke:"#000000",\
-			"stroke-width":2, style:"text-anchor: middle"}
+		if IDconfig.show
+			[x, y] = @findCenter()
+			id = new Node svg, "text", @id
+			id.setAttributes {id:"id"+@id, x, y, "font-family":"Courier", "font-size":"32px", fill:IDconfig.color,\
+				stroke:IDconfig.color, "stroke-width":2, style:"text-anchor: bottom"}
 
 		@

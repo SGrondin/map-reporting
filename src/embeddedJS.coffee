@@ -11,7 +11,7 @@ exports.getEmbeddedJS = (labels) ->
 			document.getElementById("dashboardTitle").firstChild.nodeValue = shape.getAttribute("id")+" "+shape.getAttribute("name");
 			document.getElementById("dashboardLink").setAttribute("xlink:href", shape.getAttribute("link").replace(/&/g, "%26"));
 			document.getElementById("dashboardLinkText").firstChild.nodeValue = """+"\""+labels.link+"""";
-			document.getElementById("dashboardSatisfaction").firstChild.nodeValue = """+"\""+labels.value+""": "+shape.getAttribute("value");
+			document.getElementById("dashboardSatisfaction").firstChild.nodeValue = """+"\""+labels.value+""""+shape.getAttribute("value");
 		}
 		function emptyDashboard(){
 			document.getElementById("dashboardTitle").firstChild.nodeValue = "Nothing selected";
@@ -24,7 +24,9 @@ exports.getEmbeddedJS = (labels) ->
 			head.appendChild(shape);
 			//Then put the shape's id back on top of it
 			id = document.getElementById("id"+shape.getAttribute("id"));
-			head.appendChild(id);
+			if (id != null){
+				head.appendChild(id);
+			}
 		}
 		function selectShape(shape){
 			selectedShape = shape;
