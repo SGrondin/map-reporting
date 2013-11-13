@@ -8,7 +8,7 @@ This library was developed at [Benbria Corporation](http://www.benbria.com/) for
 Low resolution static preview:
 <img src="http://simongrondin.name/files/map-reporting/map2preview.png" />
 
-[Click here for a high resolution interative example.](http://simongrondin.name/files/map-reporting/map2.svg) The scale is clickable.
+[Click here for a high resolution interactive example.](http://simongrondin.name/files/map-reporting/map2.svg) The scale is clickable.
 
 
 ## Installation
@@ -114,7 +114,7 @@ The arc will be a half-ellipse drawn from the start point to the end point, pass
 pie[[startx,starty],[endx,endy],[centerx,centery]]
 ```
 
-A pie is a circle (or part of a circle) drawn from the start point to the end point with the specified center point.
+A pie is part of a circle drawn from the start point to the end point with the specified center point.
 
 
 ### Background
