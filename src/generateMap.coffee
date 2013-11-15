@@ -6,7 +6,7 @@ Shape = (require "./Shape").Shape
 
 shapeFromZone = (zone, config) ->
 	shape = new Shape zone.ID, zone.link, zone.name, zone.value
-	zone.coordinates.split(", ").forEach (vector) ->
+	zone.coordinates.split(";").forEach (vector) ->
 		shape.addVector vector, config.background.x, config.background.y
 	shape
 

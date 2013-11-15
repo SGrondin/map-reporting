@@ -1,6 +1,6 @@
 {
   "name": "map-reporting",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Generate SVG images with interactive areas to display geographic data",
   "main": "lib/index.js",
   "scripts": {
@@ -18,7 +18,9 @@
     "areas",
     "interactive"
   ],
-  "author": "Simon Grondin",
+  "author": {
+    "name": "Simon Grondin"
+  },
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/SGrondin/map-reporting/issues"
