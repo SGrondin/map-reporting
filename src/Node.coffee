@@ -1,7 +1,7 @@
 mapUtils = require "./mapUtils"
 
 class exports.Node
-	constructor: (@parent, @type, @inner="") ->
+	constructor: (@parent, @type, @inner="", @cdata="") ->
 		@children = []
 		@attributes = {}
 		@parent?._addChild @
@@ -27,9 +27,17 @@ class exports.Node
 
 	toString: (indent=0) -> # Recursively build the XML tree by calling toString on the children nodes
 		ret = mapUtils.strRepeat("\t", indent)+"<"+@type+(" "+k+"=\""+v+"\"" for k,v of @attributes).join("")
-		if @inner.length > 0 or @children.length > 0
-			ret += ">"+@inner+
+		if @inner.length > 0 or @cdata.length > 0 or @children.length > 0
+			ret += ">"+@inner+@cdata+
 				("\n"+node.toString(indent+1) for node in @children).join("")+
 				"\n"+mapUtils.strRepeat("\t", indent)+"</"+@type+">"
 		else
 			ret += " />"
+
+	toDOM: (addTo) ->
+		el = addTo.append @type
+		if @inner.length > 0 then el.text @inner
+		for k,v of @attributes
+			if k.indexOf("xmlns") < 0 then el.attr k, v
+		for c in @children
+			c.toDOM el

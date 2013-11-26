@@ -1,2 +1,11 @@
 exports.generateMap = (require './generateMap').generateMap
-exports.mapUtils = require './mapUtils'
+embeddedJS = (require './embeddedJS')
+
+# Client side
+if global.window?
+	global.window.mapReporting = {
+		generateMap : (config, zones, image) ->
+			# Fill the window.mapReporting object with the handler methods
+			embeddedJS.setClientScope @, config.labels
+			module.exports.generateMap config, zones, image
+	}

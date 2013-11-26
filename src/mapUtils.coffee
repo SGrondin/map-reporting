@@ -8,6 +8,8 @@ exports.toHTML = (str) ->
 	str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 	.replace(/</g, '&lt;').replace(/>/g, '&gt;'); # .replace(/\\/g, "\\\\")
 
+lagrange = (a, b, c, d) ->
+
 exports.getColor = (val, color, invert=false) ->
 	if invert then val = 100 - val
 	color = color.toLowerCase()

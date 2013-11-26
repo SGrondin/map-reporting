@@ -1,9 +1,8 @@
 map-reporting
 =============
 
-Generate SVG images with interactive areas to display geographic data.
-
-This library was developed at [Benbria Corporation](http://www.benbria.com/) for the [Loop](http://www.benbria.com/solutions) product. It's a great place to work and they actively contribute to open source software.
+Generate SVG images with interactive areas to display geographic data. Map-reporting works on the server or on the client.
+Either generate SVG files on the server or pass a reference to [D3.js](http://d3js.org/) to build the SVG on the fly in the browser.
 
 Low resolution static preview:
 <img src="http://simongrondin.name/files/map-reporting/map2preview.png" />
@@ -13,17 +12,32 @@ Low resolution static preview:
 
 ## Installation
 
+####Server
 ```
 npm install map-reporting
 ```
 
+####Client
+```html
+<script type="text/javascript" src="d3.min.js"></script>
+<script type="text/javascript" src="map-reporting.js"></script>
+```
+
 ## Usage
-```generateMap``` returns a valid SVG.
+
+####Server
 ```javascript
 var map = require("map-reporting");
 
-svg = map.generateMap(config, zones, background);
+svg = map.generateMap(config, zones, background).toString();
 ```
+
+####Client
+```javascript
+mapReporting.generateMap(config, zones, background).toDOM(elementID, d3);
+```
+* elementID is the id of the element in which the SVG will created. No '#', just the name, like "mydiv".
+* d3 is a reference to the d3 instance.
 
 ### Config
 
@@ -69,8 +83,8 @@ svg = map.generateMap(config, zones, background);
 ### Zones
 
 ```zones``` is an array of objects with the following structure:
-```json
-[
+```javascript
+zones = [
 	{"ID":"A", "link":"http://google.com/?q=Aisles", "name":"Aisles", "coordinates":"[97,157];[370,157];[370,355];[97,355]", "value":0},
 	{"ID":"B", "link":"http://google.com/?q=Checkout", "name":"Checkout", "coordinates":"[182,384];[182,411];[361,411];[361,384]", "value":15},
 	{"ID":"C", "link":"http://google.com/?q=Medical", "name":"Medical", "coordinates":"[31,231];[75,231];[75,379];[152,379];[152,411];[31,411]", "value":30},
@@ -79,7 +93,7 @@ svg = map.generateMap(config, zones, background);
 	{"ID":"F", "link":"http://google.com/?q=Produce", "name":"Produce", "coordinates":"[453,157];[615,157];[617,315];[584,315];[584,223];[453,224]", "value":75},
 	{"ID":"G", "link":"http://google.com/?q=Prepared meals", "name":"Prepared meals", "coordinates":"[453,265];[565,265];[565,321];[618,321];[618,436];[585,436];[585,417];[453,417]", "value":90},
 	{"ID":"H", "link":"http://google.com/?q=Café", "name":"Café", "coordinates":"[368,424];[406,424];[406,468];[449,468];[449,453];[502,453];[502,495];[368,495]", "value":""}
-]
+];
 ```
 
 All the fields are strings except for ```value```.
@@ -112,7 +126,7 @@ The arc will be a half-ellipse drawn from the start point to the end point, pass
 pie[[startx,starty],[endx,endy],[centerx,centery]]
 ```
 
-A pie is part of a circle drawn from the start point to the end point with the specified center point.
+A pie is a circle (or part of a circle) drawn from the start point to the end point with the specified center point.
 
 
 ### Background
@@ -178,7 +192,7 @@ zones
 
 ```background``` is the base64 string of [this image](http://simongrondin.name/files/map-reporting/map1background.jpg).
 
-[This is the SVG generated.](http://simongrondin.name/files/map-reporting/map1.svg)
+[This is the generated SVG.](http://simongrondin.name/files/map-reporting/map1.svg)
 
 #### Example 2
 
@@ -247,4 +261,4 @@ zones
 
 ```background``` is the base64 string of [this image](http://simongrondin.name/files/map-reporting/map2background.jpg).
 
-[This is the SVG generated.](http://simongrondin.name/files/map-reporting/map2.svg)
+[This is the generated SVG.](http://simongrondin.name/files/map-reporting/map2.svg)

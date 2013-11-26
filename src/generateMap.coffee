@@ -14,7 +14,8 @@ shapeFromZone = (zone, config) ->
 exports.generateMap = (config, zones, image) ->
 	svg = new SVG()
 	svg.setAttributes {width:config.width, height:config.height}
-	svg.setEmbeddedJS embeddedJS.getEmbeddedJS(config.labels)
+	# Sets the CDATA of the <script> tag. Ignored on the client side.
+	svg.setEmbeddedJS embeddedJS.getEmbeddedJS config.labels
 
 	# Bitmap background
 	if image?
@@ -49,7 +50,7 @@ exports.generateMap = (config, zones, image) ->
 		line = new Node svg, "path"
 		line.setAttributes {d:"M "+(config.scale.x+i)+" "+(config.scale.y+config.scale.height)+
 			" L "+(config.scale.x+i)+" "+config.scale.y+" Z", stroke:mapUtils.getColor(value, "red", true),
-			class:"bad", onmousedown:"changeScaleColor(evt);"}
+			class:"bad", onmousedown:"mapReporting.changeScaleColor(evt);"}
 	for i in [halfDown..config.scale.width]
 		value = (i-halfDown)/(config.scale.width/2/100)
 		line = new Node svg, "path"
@@ -58,7 +59,7 @@ exports.generateMap = (config, zones, image) ->
 		initialColor = mapUtils.getColor(value, config.scale.initial, false)
 		alternateColor = mapUtils.getColor(value, config.scale.alternate, false)
 		line.setAttributes {d, stroke:initialColor, initialColor, alternateColor,\
-			class:"good", onmousedown:"changeScaleColor(evt);"}
+			class:"good", onmousedown:"mapReporting.changeScaleColor(evt);"}
 
 	# Dashboard elements
 	textrectangle = new Node svg, "rect"
@@ -70,7 +71,7 @@ exports.generateMap = (config, zones, image) ->
 		id:"dashboardTitle", "font-family":"Arial"}
 
 	dashboardLink = new Node svg, "a"
-	dashboardLink.setAttributes {"xlink:href":"", id:"dashboardLink", target:"_blank"}
+	dashboardLink.setAttributes {"xlink:href":"", "href":"", id:"dashboardLink", target:"_blank"}
 
 	dashboardSatisfaction = new Node svg, "text", " "
 	dashboardSatisfaction.setAttributes {x:config.dashboard.x+10, y:config.dashboard.y+41,\
@@ -81,4 +82,4 @@ exports.generateMap = (config, zones, image) ->
 	dashboardLinkText.setAttributes {x:config.dashboard.x+10, y:config.dashboard.y+66,\
 		id:"dashboardLinkText", "font-family":"Arial", "style":"text-decoration:underline;"}
 
-	svg.toString()
+	svg

@@ -111,7 +111,8 @@ class exports.Shape
 		node.setAttributes {value, stroke:stroke, "stroke-width":4, "stroke-opacity":"0.4"}
 
 		# Add javascript event hooks
-		node.setAttributes {onmouseover:"mouseOver(evt);", onmouseout:"mouseOut(evt);", onmousedown:"mouseDown(evt);"}
+		node.setAttributes {onmouseover:"mapReporting.mouseOver(evt);",\
+			onmouseout:"mapReporting.mouseOut(evt);", onmousedown:"mapReporting.mouseDown(evt);"}
 
 		# Place id
 		if IDconfig.show
