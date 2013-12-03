@@ -66,27 +66,27 @@ class exports.Shape
 	createFilter: (stroke, radialColor) ->
 		filter = new Node null, "radialGradient"
 		innerFilter1 = new Node filter, "stop"
-		innerFilter1.setAttributes {offset:"35%", "stop-color":radialColor, "stop-opacity":"0.5"}
+		innerFilter1.setAttributes {offset:"35%", "stop-color":radialColor, class:"stop1"}
 		innerFilter2 = new Node filter, "stop"
-		innerFilter2.setAttributes {offset:"99%", "stop-color":stroke, "stop-opacity":"0.8"}
+		innerFilter2.setAttributes {offset:"99%", "stop-color":stroke, class:"stop2"}
 		filter
 
-	addToSVG: (svg, initial, alternate, threshold, IDconfig) ->
+	addToSVG: (svg, config) ->
 		# Create node and set its attributes
 		node = new Node svg, "path"
 		node.setAttributes {id:@id, name:@name, link:@link, d:@d+"Z"}
 
 		# Generate and add color attributes
-		if @val? and @val != "" and threshold? and threshold != "" and (0 <= @val <= 100) and (0 <= threshold <= 100)
+		if @val? and @val != "" and config.threshold? and config.threshold != "" and (0 <= @val <= 100) and (0 <= config.threshold <= 100)
 			colors = {
-				green : mapUtils.getColor ((@val-threshold)/(100-threshold)*100), "green", false
-				blue : mapUtils.getColor ((@val-threshold)/(100-threshold)*100), "blue", false
-				red : mapUtils.getColor (@val/threshold*100), "red", true
+				green : mapUtils.getColor ((@val-config.threshold)/(100-config.threshold)*100), "green", false
+				blue : mapUtils.getColor ((@val-config.threshold)/(100-config.threshold)*100), "blue", false
+				red : mapUtils.getColor (@val/config.threshold*100), "red", true
 			}
 			if @val > 70
-				node.setAttributes {class:"good"}
-				initialColor = colors[initial]
-				alternateColor = colors[alternate]
+				node.setAttributes {class:"zone good"}
+				initialColor = colors[config.scale.initial]
+				alternateColor = colors[config.scale.alternate]
 				stroke = initialColor
 				radialGradient = stroke # Could be changed in the future
 				initialFilter = svg.addDef (@createFilter initialColor, initialColor), @id+"initial"
@@ -94,7 +94,7 @@ class exports.Shape
 				node.setAttributes {"fill":"url(#"+initialFilter+")", initialFilter, alternateFilter,\
 					initialColor, alternateColor}
 			else
-				node.setAttributes {class:"bad"}
+				node.setAttributes {class:"zone bad"}
 				stroke = colors.red
 				radialGradient = stroke # Could be changed in the future
 				filter = svg.addDef (@createFilter colors.red, colors.red), @id+"initial"
@@ -104,21 +104,21 @@ class exports.Shape
 
 		else
 			stroke = "#FFFFFF"
-			radialColor = "#AAAAAA"
 			value = "--"
-			node.setAttributes {fill:"url(#fdashed)"}
+			node.setAttributes {fill:"url(#fdashed)", class:"zone"}
 
-		node.setAttributes {value, stroke:stroke, "stroke-width":4, "stroke-opacity":"0.4"}
+		node.setAttributes {value, stroke:stroke}
 
 		# Add javascript event hooks
-		node.setAttributes {onmouseover:"mapReporting.mouseOver(evt);",\
-			onmouseout:"mapReporting.mouseOut(evt);", onmousedown:"mapReporting.mouseDown(evt);"}
+		node.setAttributes {onmouseover:"mapReporting.shapeOver(evt);",\
+			onmouseout:"mapReporting.shapeOut(evt);", onmousedown:"mapReporting.shapeDown(evt);"}
 
 		# Place id
-		if IDconfig.show
+		if config.showIDs
 			[x, y] = @findCenter()
+			y += 20 # Because the ID font size is quite big
 			id = new Node svg, "text", @id
-			id.setAttributes {id:"id"+@id, x, y, "font-family":"Courier", "font-size":"32px", fill:IDconfig.color,\
-				stroke:IDconfig.color, "stroke-width":2, style:"text-anchor: bottom"}
+			id.setAttributes {id:"id"+@id, x, y, class:"zoneid", onmouseover:"mapReporting.IDover(evt);",\
+				onmouseout:"mapReporting.IDout(evt);", onmousedown:"mapReporting.IDdown(evt);"}
 
 		@

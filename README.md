@@ -1,8 +1,7 @@
 map-reporting
 =============
 
-Generate SVG images with interactive areas to display geographic data. Map-reporting works on the server or on the client.
-Either generate SVG files on the server or pass a reference to [D3.js](http://d3js.org/) to build the SVG on the fly in the browser.
+Generate SVG images with interactive areas to display geographic data. Map-reporting works on the server or on the client: either generate SVG files on the server or let it build the SVG inside any div-like HTML element.
 
 Low resolution static preview:
 <img src="http://simongrondin.name/files/map-reporting/map2preview.png" />
@@ -27,9 +26,9 @@ npm install map-reporting
 
 ####Server
 ```javascript
-var mapReporting = require("map-reporting");
+var map = require("map-reporting");
 
-svg = mapReporting.generateMap(config, zones, background).toString();
+svg = map.generateMap(config, zones, background).toString();
 ```
 
 ####Client
@@ -69,10 +68,7 @@ mapReporting.generateMap(config, zones, background).toDOM(elementID, d3);
 		"y":10                       // Scale top right corner y
 	},
 	"threshold":70,                  // Values above the threshold are considered good
-	"IDs":{
-		"show":true,                 // Draw the zones' ID
-		"color":"#000000"            // ID text color
-	},
+	"showIDs":true,
 	"labels":{
 		"value":"Satisfaction: ",    // The value's label in the dashboard
 		"link":"View data"           // Link text
@@ -134,6 +130,11 @@ A pie is a circle (or part of a circle) drawn from the start point to the end po
 ```background``` is a base-64 formatted string of a PNG or JPG image.
 
 
+## Styling
+
+The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in the page containing a map.
+
+
 ## Examples
 
 #### Example 1
@@ -166,10 +167,7 @@ config
 		"y":10
 	},
 	"threshold":70,
-	"IDs":{
-		"show":true,
-		"color":"#000000"
-	},
+	"showIDs":true,
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"
@@ -224,10 +222,7 @@ config
 		"y":10
 	},
 	"threshold":70,
-	"IDs":{
-		"show":false,
-		"color":"#000000"
-	},
+	"showIDs":false,
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"

@@ -16,8 +16,10 @@ class exports.Node
 		@children.push obj
 		@
 
-	setInner: (inner) ->
-		@inner = inner
+	setInner: (@inner) ->
+		@
+
+	setCDATA: (@cdata) ->
 		@
 
 	setAttributes: (obj) ->
@@ -34,10 +36,15 @@ class exports.Node
 		else
 			ret += " />"
 
-	toDOM: (addTo) ->
-		el = addTo.append @type
-		if @inner.length > 0 then el.text @inner
+	toDOM: (addTo, test) ->
+		el = document.createElementNS "http://www.w3.org/2000/svg", @type
+		if @inner.length > 0 then el.appendChild document.createTextNode @inner
+		if @cdata.length > 0 and @type != "script" then el.appendChild document.createTextNode @cdata
 		for k,v of @attributes
-			if k.indexOf("xmlns") < 0 then el.attr k, v
+			if k != "xlink:href"
+				el.setAttribute k, v
+			else
+				el.setAttributeNS('http://www.w3.org/1999/xlink', k, v)
 		for c in @children
 			c.toDOM el
+		addTo.appendChild el

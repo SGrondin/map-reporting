@@ -1,6 +1,6 @@
 {
   "name": "map-reporting",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Generate SVG images with interactive areas to display geographic data",
   "main": "lib/index.js",
   "scripts": {
@@ -24,5 +24,9 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/SGrondin/map-reporting/issues"
+  },
+  "devDependencies":{
+    "coffee-script": "*",
+    "browserify": "*"
   }
 }

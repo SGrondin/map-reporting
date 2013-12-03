@@ -15,10 +15,19 @@ exports.getEmbeddedJS = (labels) ->
 
 exports.setClientScope = (scope, labels) ->
 	scope.usingAlternateColor = false
-	scope.hoveredStroke = null
-	scope.selectedShape = null
-	scope.selectedStroke = null
 	scope.labels = labels
+	scope.removeClass = (element, name) ->
+		element.setAttribute("class", element.getAttribute("class").split(" ").filter((a) -> a != name).join(" "))
+	scope.removeAllClass = (name) ->
+		@.removeClass selected, name for selected in document.getElementsByClassName name
+	scope.addClass = (element, name) ->
+		arr = element.getAttribute("class").split " "
+		arr.push name
+		element.setAttribute("class", arr.join " ")
+	scope.hasClass = (element, name) ->
+		(element.getAttribute("class").split " ").indexOf(name) >= 0
+	scope.somethingIsSelected = () ->
+		(document.getElementsByClassName "selected").length > 0
 	scope.displayShapeInDashboard = (shape) ->
 		document.getElementById("dashboardTitle").firstChild.nodeValue = shape.getAttribute("id")+" "+shape.getAttribute("name")
 		document.getElementById("dashboardLink").setAttribute("xlink:href", shape.getAttribute("link").replace(/&/g, "%26"))
@@ -29,61 +38,50 @@ exports.setClientScope = (scope, labels) ->
 		document.getElementById("dashboardTitle").firstChild.nodeValue = "Nothing selected"
 		document.getElementById("dashboardLinkText").firstChild.nodeValue = ""
 		document.getElementById("dashboardSatisfaction").firstChild.nodeValue = ""
+	scope.displaySelected = () ->
+		@.displayShapeInDashboard selected for selected in (document.getElementsByClassName "selected")
 	scope.putOnTop = (shape) ->
-		@.displayShapeInDashboard(shape)
 		document.getElementById("head").appendChild(shape)
 		id = document.getElementById("id"+shape.getAttribute("id"))
-		if id != null then document.getElementById("head").appendChild(id)
-	scope.selectShape = (shape) ->
-		@.selectedShape = shape
-		@.selectedStroke = @.hoveredStroke
-		shape.setAttribute("stroke", "#000000")
-		shape.setAttribute("stroke-opacity", "1")
-		shape.setAttribute("stroke-width", "6")
-		shape.removeAttribute("stroke-dasharray")
-	scope.releaseShape = () ->
-		@.selectedShape.setAttribute("stroke", @.selectedStroke)
-		@.selectedShape.setAttribute("stroke-width", "4")
-		@.selectedShape.setAttribute("stroke-opacity", "0.4")
-		@.selectedStroke = null
-		@.selectedShape = null
-	scope.mouseOver = (evt) ->
-		@.putOnTop(evt.target)
-		if evt.target != @.selectedShape
-			@.hoveredStroke = evt.target.getAttribute("stroke")
-			evt.target.setAttribute("stroke", "#000000")
-			evt.target.setAttribute("stroke-opacity", "1")
-			evt.target.setAttribute("stroke-width", "6")
-			evt.target.setAttribute("stroke-dasharray", "12,8")
-	scope.mouseOut = (evt) ->
-		if @.selectedShape != null
-			@.putOnTop(@.selectedShape)
+		if id? then document.getElementById("head").appendChild(id)
+	scope.putSelectedOnTop = () ->
+		@.putOnTop selected for selected in document.getElementsByClassName "selected"
+
+	# LISTENERS
+	scope.mouseOver = (shape) ->
+		if not @.hasClass shape, "selected" then @.addClass shape, "hovered"
+		@.putOnTop shape
+		@.putSelectedOnTop()
+		@.displayShapeInDashboard shape
+	scope.mouseOut = (shape) ->
+		@.removeClass shape, "hovered"
+		if @.somethingIsSelected()
+			@.displaySelected()
 		else
 			@.emptyDashboard()
-		evt.target.removeAttribute("stroke-dasharray")
-		if evt.target != @.selectedShape
-			evt.target.setAttribute("stroke", @.hoveredStroke)
-			evt.target.setAttribute("stroke-opacity", "0.4")
-			evt.target.setAttribute("stroke-width", "4")
-	scope.mouseDown = (evt) ->
-		if @.selectedShape == null
-			@.selectShape(evt.target)
-		else if evt.target == @.selectedShape
-			@.hoveredStroke = @.selectedStroke
-			@.selectedStroke = null
-			@.selectedShape = null
-			evt.target.setAttribute("stroke-dasharray", "12,8")
+	scope.mouseDown = (shape) ->
+		isSelected = @.hasClass shape, "selected"
+		@.removeAllClass "selected"
+		if isSelected
+			@.addClass shape, "hovered"
 		else
-			@.releaseShape()
-			@.selectShape(evt.target)
+			@.removeClass shape, "hovered"
+			@.addClass shape, "selected"
+		@.putOnTop shape
+	scope.shapeOver = (evt) ->	@.mouseOver evt.target
+	scope.shapeOut = (evt) ->	@.mouseOut evt.target
+	scope.shapeDown = (evt) ->	@.mouseDown evt.target
+	scope.IDover = (evt) ->	@.mouseOver document.getElementById evt.target.getAttribute("id")[2..]
+	scope.IDout = (evt) ->	@.mouseOut document.getElementById evt.target.getAttribute("id")[2..]
+	scope.IDdown = (evt) ->	@.mouseDown document.getElementById evt.target.getAttribute("id")[2..]
 	scope.changeScaleColor = (evt) ->
-		elements = document.getElementsByClassName("good")
+		elements = document.getElementsByClassName "good"
 		for element in elements
 			if @.usingAlternateColor
-				element.setAttribute("fill", "url(#"+element.getAttribute("initialFilter")+")")
-				element.setAttribute("stroke", element.getAttribute("initialColor"))
+				element.setAttribute "fill", "url(#"+element.getAttribute("initialFilter")+")"
+				element.setAttribute "stroke", element.getAttribute "initialColor"
 			else
-				element.setAttribute("fill", "url(#"+element.getAttribute("alternateFilter")+")")
-				element.setAttribute("stroke", element.getAttribute("alternateColor"))
+				element.setAttribute "fill", "url(#"+element.getAttribute("alternateFilter")+")"
+				element.setAttribute "stroke", element.getAttribute "alternateColor"
 		@.usingAlternateColor = !@.usingAlternateColor
 	scope
