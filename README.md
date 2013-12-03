@@ -18,7 +18,6 @@ npm install map-reporting
 
 ####Client
 ```html
-<script type="text/javascript" src="d3.min.js"></script>
 <script type="text/javascript" src="map-reporting.js"></script>
 ```
 
@@ -33,10 +32,9 @@ svg = map.generateMap(config, zones, background).toString();
 
 ####Client
 ```javascript
-mapReporting.generateMap(config, zones, background).toDOM(elementID, d3);
+mapReporting.generateMap(config, zones, background).toDOM(elementID);
 ```
 * elementID is the id of the element in which the SVG will created. No '#', just the name, like "mydiv".
-* d3 is a reference to the d3 instance.
 
 ### Config
 
