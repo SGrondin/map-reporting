@@ -18,7 +18,7 @@ npm install map-reporting
 
 ####Client
 ```html
-<script type="text/javascript" src="map-reporting.js"></script>
+<script type="text/javascript" src="map-reporting.min.js"></script>
 ```
 
 ## Usage

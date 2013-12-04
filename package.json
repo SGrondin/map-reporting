@@ -1,6 +1,6 @@
 {
   "name": "map-reporting",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Generate SVG images with interactive areas to display geographic data",
   "main": "lib/index.js",
   "scripts": {
@@ -27,6 +27,7 @@
   },
   "devDependencies":{
     "coffee-script": "*",
-    "browserify": "*"
+    "browserify": "*",
+    "uglify-js": "*"
   }
 }
