@@ -1,6 +1,6 @@
 {
   "name": "map-reporting",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Generate SVG images with interactive areas to display geographic data",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,9 @@
     "heat",
     "zones",
     "areas",
-    "interactive"
+    "interactive",
+    "reporting",
+    "statistics"
   ],
   "author": {
     "name": "Simon Grondin"

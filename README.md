@@ -25,9 +25,9 @@ npm install map-reporting
 
 ####Server
 ```javascript
-var map = require("map-reporting");
+var mapReporting = require("map-reporting");
 
-svg = map.generateMap(config, zones, background).toString();
+svg = mapReporting.generateMap(config, zones, background).toString();
 ```
 
 ####Client
