@@ -71,9 +71,9 @@ exports.setClientScope = (scope, labels) ->
 	scope.shapeOver = (evt) ->	@mouseOver evt.target
 	scope.shapeOut = (evt) ->	@mouseOut evt.target
 	scope.shapeDown = (evt) ->	@mouseDown evt.target
-	scope.IDover = (evt) ->	@mouseOver document.getElementById evt.target.getAttribute("id")[2..]
-	scope.IDout = (evt) ->	@mouseOut document.getElementById evt.target.getAttribute("id")[2..]
-	scope.IDdown = (evt) ->	@mouseDown document.getElementById evt.target.getAttribute("id")[2..]
+	scope.IDover = (evt) ->		@mouseOver document.getElementById evt.target.getAttribute("id")[2..]
+	scope.IDout = (evt) ->		@mouseOut document.getElementById evt.target.getAttribute("id")[2..]
+	scope.IDdown = (evt) ->		@mouseDown document.getElementById evt.target.getAttribute("id")[2..]
 	scope.changeScaleColor = (evt) ->
 		elements = document.getElementsByClassName "good"
 		for element in elements

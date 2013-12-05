@@ -27,12 +27,12 @@ npm install map-reporting
 ```javascript
 var mapReporting = require("map-reporting");
 
-svg = mapReporting.generateMap(config, zones, background).toString();
+svg = mapReporting.generateMap(config, zones).toString();
 ```
 
 ####Client
 ```javascript
-mapReporting.generateMap(config, zones, background).toDOM(elementID);
+mapReporting.generateMap(config, zones).toDOM(elementID);
 ```
 * elementID is the id of the element in which the SVG will created. No '#', just the name, like "mydiv".
 
@@ -49,7 +49,9 @@ mapReporting.generateMap(config, zones, background).toDOM(elementID);
 		"height":531,                // Background bitmap height
 		"x":0,                       // Background bitmap top left corner x
 		"y":160,                     // Background bitmap top left corner y
-		"saturation":1.0             // Background bitmap color saturation (0 to 1)
+		"saturation":1.0,            // Background bitmap color saturation (0 to 1)
+		"url":null,                  // Put the URL of the background image here, or null to ignore
+		"base64":"long-base64-string"// Put the base64 encoded JPG or PNG of the background image or null to ignore
 	},
 	"dashboard":{
 		"x":10,                      // Dashboard top left corner x
@@ -123,11 +125,6 @@ pie[[startx,starty],[endx,endy],[centerx,centery]]
 A pie is a circle (or part of a circle) drawn from the start point to the end point with the specified center point.
 
 
-### Background
-
-```background``` is a base-64 formatted string of a PNG or JPG image.
-
-
 ## Styling
 
 The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page containing a map.
@@ -148,7 +145,9 @@ config
 		"height":531,
 		"x":0,
 		"y":160,
-		"saturation":1.0
+		"saturation":1.0,
+		"url":"http://simongrondin.name/files/map-reporting/map1background.jpg",
+		"base64":null
 	},
 	"dashboard":{
 		"x":10,
@@ -188,8 +187,6 @@ zones
 ]
 ```
 
-```background``` is the base64 string of [this image](http://simongrondin.name/files/map-reporting/map1background.jpg).
-
 [This is the generated SVG.](http://simongrondin.name/files/map-reporting/map1.svg)
 
 #### Example 2
@@ -205,7 +202,9 @@ config
 		"height":918,
 		"x":0,
 		"y":0,
-		"saturation":0.5
+		"saturation":0.5,
+		"url":null,
+		"base64":"this-is-the-really-long-base64-string-of-http://simongrondin.name/files/map-reporting/map2background.jpg"
 	},
 	"dashboard":{
 		"x":10,
@@ -255,7 +254,5 @@ zones
 	{"ID":"19", "link":"http://google.com/?q=Lighted Tennis Court", "name":"Lighted Tennis Court", "coordinates":"[70,283];[218,283];[218,352];[70,352]", "value":95}
 ]
 ```
-
-```background``` is the base64 string of [this image](http://simongrondin.name/files/map-reporting/map2background.jpg).
 
 [This is the generated SVG.](http://simongrondin.name/files/map-reporting/map2.svg)

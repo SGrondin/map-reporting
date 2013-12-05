@@ -12,16 +12,20 @@ shapeFromZone = (zone, config) ->
 	shape
 
 # Config must be an object, Shapes is an array of strings
-exports.generateMap = (config, zones, image, style) ->
+exports.generateMap = (config, zones) ->
 	svg = new SVG()
 	svg.setAttributes {width:config.width, height:config.height}
 	# Sets the CDATA of the <script> tag. Ignored on the client side.
 	svg.setEmbeddedJS embeddedJS.getEmbeddedJS config.labels
 
 	# Bitmap background
-	if image?
+	if config.background.url?.length > 0 or config.background.base64?.length > 0
 		bg = new Node svg, "image"
-		bg.setAttributes {"xlink:href":"data:image/png;base64,"+image,\
+		image = if config.background.base64?.length > 0
+			"data:image/png;base64,"+config.background.base64
+		else
+			config.background.url
+		bg.setAttributes {"xlink:href":image,\
 			x:config.background.x, y:config.background.y, height:config.background.height, width:config.background.width,\
 			filter:"url(#fdesaturation)"}
 

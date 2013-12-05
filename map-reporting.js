@@ -587,18 +587,19 @@
     return shape;
   };
 
-  exports.generateMap = function(config, zones, image, style) {
-    var alternateColor, bg, d, dashboardLink, dashboardLinkText, dashboardSatisfaction, dashboardTitle, desaturation, desaturationFilter, halfDown, halfUp, i, initialColor, innerPattern, line, pattern, rectangle, scale, svg, value, zone, _i, _j, _k, _len, _ref;
+  exports.generateMap = function(config, zones) {
+    var alternateColor, bg, d, dashboardLink, dashboardLinkText, dashboardSatisfaction, dashboardTitle, desaturation, desaturationFilter, halfDown, halfUp, i, image, initialColor, innerPattern, line, pattern, rectangle, scale, svg, value, zone, _i, _j, _k, _len, _ref, _ref1, _ref2, _ref3;
     svg = new SVG();
     svg.setAttributes({
       width: config.width,
       height: config.height
     });
     svg.setEmbeddedJS(embeddedJS.getEmbeddedJS(config.labels));
-    if (image != null) {
+    if (((_ref = config.background.url) != null ? _ref.length : void 0) > 0 || ((_ref1 = config.background.base64) != null ? _ref1.length : void 0) > 0) {
       bg = new Node(svg, "image");
+      image = ((_ref2 = config.background.base64) != null ? _ref2.length : void 0) > 0 ? "data:image/png;base64," + config.background.base64 : config.background.url;
       bg.setAttributes({
-        "xlink:href": "data:image/png;base64," + image,
+        "xlink:href": image,
         x: config.background.x,
         y: config.background.y,
         height: config.background.height,
@@ -649,7 +650,7 @@
         "class": "bad"
       });
     }
-    for (i = _k = halfDown, _ref = config.scale.width; halfDown <= _ref ? _k <= _ref : _k >= _ref; i = halfDown <= _ref ? ++_k : --_k) {
+    for (i = _k = halfDown, _ref3 = config.scale.width; halfDown <= _ref3 ? _k <= _ref3 : _k >= _ref3; i = halfDown <= _ref3 ? ++_k : --_k) {
       value = (i - halfDown) / (config.scale.width / 2 / 100);
       line = new Node(scale, "path");
       d = "M " + (config.scale.x + i) + " " + (config.scale.y + config.scale.height) + " L " + (config.scale.x + i) + " " + config.scale.y + " Z";
@@ -792,9 +793,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
   if (global.window != null) {
     global.window.mapReporting = {
-      generateMap: function(config, zones, image) {
+      generateMap: function(config, zones) {
         embeddedJS.setClientScope(this, config.labels);
-        return module.exports.generateMap(config, zones, image);
+        return module.exports.generateMap(config, zones);
       }
     };
   }
