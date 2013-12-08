@@ -21,6 +21,13 @@ exports.css = """
 		.stop2 {
 			stop-opacity : 0.85;
 		}
+		.scaleNumber {
+			-webkit-user-select : none;
+			-moz-user-select : none;
+			-ms-user-select : none;
+			-o-user-select : none;
+			user-select : none;
+		}
 		.zoneid {
 			stroke : #000000;
 			fill : #000000;

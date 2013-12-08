@@ -6,7 +6,7 @@ lpad = (str, pad, len) ->
 
 exports.toHTML = (str) ->
 	str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
-	.replace(/</g, '&lt;').replace(/>/g, '&gt;'); # .replace(/\\/g, "\\\\")
+		.replace(/</g, '&lt;').replace(/>/g, '&gt;'); # .replace(/\\/g, "\\\\")
 
 lagrange = (val, a, b, c, d, e, f) -> ((a*Math.pow(val, 4) + b*Math.pow(val, 3) + c*Math.pow(val, 2) + d*val + e) / f)
 

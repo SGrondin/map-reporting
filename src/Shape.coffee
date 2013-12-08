@@ -5,7 +5,7 @@ geometry = require "./geometry"
 class exports.Shape
 	constructor: (@id, @link, @name, @val) ->
 		@link = encodeURI @link
-		@name = mapUtils.toHTML @name
+		# @name = mapUtils.toHTML @name
 		@coordinates = [] # Basic coordinates, used to find the shape's center
 		@d = ""
 		pair = "\[[0-9]{1,5}(\.[0-9]{1,5})?,[0-9]{1,5}(\.[0-9]{1,5})?\]"
@@ -83,12 +83,11 @@ class exports.Shape
 				blue : mapUtils.getColor ((@val-config.threshold)/(100-config.threshold)*100), "blue", false
 				red : mapUtils.getColor (@val/config.threshold*100), "red", true
 			}
-			if @val > 70
+			if @val > config.threshold
 				node.setAttributes {class:"zone good"}
 				initialColor = colors[config.scale.initial]
 				alternateColor = colors[config.scale.alternate]
 				stroke = initialColor
-				radialGradient = stroke # Could be changed in the future
 				initialFilter = svg.addDef (@createFilter initialColor, initialColor), @id+"initial"
 				alternateFilter = svg.addDef (@createFilter alternateColor, alternateColor), @id+"alternate"
 				node.setAttributes {"fill":"url(#"+initialFilter+")", initialFilter, alternateFilter,\
@@ -96,7 +95,6 @@ class exports.Shape
 			else
 				node.setAttributes {class:"zone bad"}
 				stroke = colors.red
-				radialGradient = stroke # Could be changed in the future
 				filter = svg.addDef (@createFilter colors.red, colors.red), @id+"initial"
 				node.setAttributes {fill:"url(#"+filter+")"}
 
@@ -107,7 +105,7 @@ class exports.Shape
 			value = "--"
 			node.setAttributes {fill:"url(#fdashed)", class:"zone"}
 
-		node.setAttributes {value, stroke:stroke}
+		node.setAttributes {value, stroke}
 
 		# Add javascript event hooks
 		node.setAttributes {onmouseover:"mapReporting.shapeOver(evt);",\

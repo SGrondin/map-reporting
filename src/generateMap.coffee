@@ -50,21 +50,31 @@ exports.generateMap = (config, zones) ->
 	# Scale
 	scale = new Node svg, "g"
 	scale.setAttributes {onmousedown:"mapReporting.changeScaleColor(evt);"}
-	halfUp = Math.floor(config.scale.width/2)
-	halfDown = Math.ceil(config.scale.width/2)
+	halfUp = Math.floor(config.scale.width*(~~config.threshold)/100)
+	halfDown = halfUp+1
 	for i in [0..halfUp]
-		value = i/(config.scale.width/2/100)
+		value = i/(halfUp/100)
 		line = new Node scale, "path"
 		line.setAttributes {d:"M "+(config.scale.x+i)+" "+(config.scale.y+config.scale.height)+" L "+
 			(config.scale.x+i)+" "+config.scale.y+" Z", stroke:mapUtils.getColor(value, "red", true), class:"bad"}
 	for i in [halfDown..config.scale.width]
-		value = (i-halfDown)/(config.scale.width/2/100)
+		value = (i-halfDown)/((config.scale.width-halfUp)/100)
 		line = new Node scale, "path"
 		d = "M "+(config.scale.x+i)+" "+(config.scale.y+config.scale.height)+
 			" L "+(config.scale.x+i)+" "+config.scale.y+" Z"
 		initialColor = mapUtils.getColor(value, config.scale.initial, false)
 		alternateColor = mapUtils.getColor(value, config.scale.alternate, false)
 		line.setAttributes {d, stroke:initialColor, initialColor, alternateColor, class:"good"}
+	if config.scale.showNumbers
+		scaleNumbers = new Node svg, "g"
+		n1 = new Node scaleNumbers, "text", "0"
+		n1.setAttributes {x:config.scale.x, y:(config.scale.y+config.scale.height+14), class:"scaleNumber"}
+		n2 = new Node scaleNumbers, "text", config.threshold+""
+		n2.setAttributes {x:(config.scale.x+halfDown), y:(config.scale.y+config.scale.height+14),\
+			class:"scaleNumber"}
+		n3 = new Node scaleNumbers, "text", "100"
+		n3.setAttributes {x:(config.scale.x+config.scale.width), y:(config.scale.y+config.scale.height+14),\
+			class:"scaleNumber"}
 
 	# Dashboard elements
 	rectangle = new Node svg, "rect"

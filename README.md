@@ -51,7 +51,7 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 		"y":160,                     // Background bitmap top left corner y
 		"saturation":1.0,            // Background bitmap color saturation (0 to 1)
 		"url":null,                  // Put the URL of the background image here, or null to ignore
-		"base64":"long-base64-string"// Put the base64 encoded JPG or PNG of the background image or null to ignore
+		"base64":"/9j/4AAQSkZJRg..." // Put the base64 encoded JPG or PNG of the background image or null to ignore
 	},
 	"dashboard":{
 		"x":10,                      // Dashboard top left corner x
@@ -65,7 +65,8 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 		"width":240,                 // Scale width
 		"height":20,                 // Scale height
 		"x":500,                     // Scale top left corner x
-		"y":10                       // Scale top right corner y
+		"y":10,                      // Scale top right corner y
+		"showNumbers":false          // Show numbers on the scale
 	},
 	"threshold":70,                  // Values above the threshold are considered good
 	"showIDs":true,
@@ -101,7 +102,7 @@ Value must be between 0 and 100. To indicate lack of data, enter -1 or an empty 
 
 Enter the coordinates of each zone in a clock-wise order.
 
-Drawing a rectangle is as easy as ```[x1,y1];[x2,y2];[x3, y3];[x4,y4]```
+Drawing a rectangle is as easy as ```[x1,y1];[x2,y2];[x3,y3];[x4,y4]```
 
 Each coordinate is separated by ```;```.
 
@@ -127,7 +128,7 @@ A pie is a circle (or part of a circle) drawn from the start point to the end po
 
 ## Styling
 
-The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page containing a map.
+The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page.
 
 
 ## Examples
@@ -161,7 +162,8 @@ config
 		"width":240,
 		"height":20,
 		"x":500,
-		"y":10
+		"y":10,
+		"showNumbers":true
 	},
 	"threshold":70,
 	"showIDs":true,
@@ -204,7 +206,7 @@ config
 		"y":0,
 		"saturation":0.5,
 		"url":null,
-		"base64":"this-is-the-really-long-base64-string-of-http://simongrondin.name/files/map-reporting/map2background.jpg"
+		"base64":"/9j/4AAQSkZJRgABAgAAAQABAAD/4AAcT2NhZCRSZXY6IDI..."
 	},
 	"dashboard":{
 		"x":10,
@@ -218,7 +220,8 @@ config
 		"width":240,
 		"height":20,
 		"x":500,
-		"y":10
+		"y":10,
+		"showNumbers":false
 	},
 	"threshold":70,
 	"showIDs":false,
@@ -235,8 +238,8 @@ zones
 [
 	{"ID":"1", "link":"http://google.com/?q=Lobby/Front Desk", "name":"Lobby/Front Desk", "coordinates":"[727,262];[979,261];[979,332];[934,318];[727,318]", "value":5},
 	{"ID":"2", "link":"http://google.com/?q=Tour Desk", "name":"Tour Desk", "coordinates":"[979,261];[1234,261];[1234,318];[1024,318];[979,332]", "value":10},
-	{"ID":"3", "link":"http://google.com/?q=Player's Lounge", "name":"Player’s Lounge", "coordinates":"[727,318];[823,318];[823,425];[727,425]", "value":15},
-	{"ID":"4", "link":"http://google.com/?q=Gym &amp; Sauna", "name":"Gym & Sauna", "coordinates":"[979,206];[1234,206];[1234,261];[979,260]", "value":25},
+	{"ID":"3", "link":"http://google.com/?q=Player's Lounge", "name":"Player's Lounge", "coordinates":"[727,318];[823,318];[823,425];[727,425]", "value":15},
+	{"ID":"4", "link":"http://google.com/?q=Gym & Sauna", "name":"Gym & Sauna", "coordinates":"[979,206];[1234,206];[1234,261];[979,260]", "value":25},
 	{"ID":"5", "link":"http://google.com/?q=Pocomania Gift Shop", "name":"Pocomania Gift Shop", "coordinates":"[727,425];[823,425];[823,480];[727,480]", "value":30},
 	{"ID":"6", "link":"http://google.com/?q=Bay Window Restaurant", "name":"Bay Window Restaurant", "coordinates":"[1137,318];[1234,318];[1234,481];[1137,481]", "value":35},
 	{"ID":"7", "link":"http://google.com/?q=The Carlyle Restaurant", "name":"The Carlyle Restaurant", "coordinates":"[405,300];[592,300];[546,328];[546,381];[451,381];[451,328];[405,300]", "value":40},
@@ -247,7 +250,7 @@ zones
 	{"ID":"12", "link":"http://google.com/?q=Whirlpool", "name":"Whirlpool", "coordinates":"arc[[899,371],[899,425],[918,398]];arc[[899,425],[899,371],[878,398]]", "value":65},
 	{"ID":"13", "link":"http://google.com/?q=Public Beach", "name":"Public Beach", "coordinates":"[0,521];[1104,521];[1389,648];[1389,918];[0,918]", "value":69},
 	{"ID":"14", "link":"http://google.com/?q=Treatment Room", "name":"Treatment Room", "coordinates":"[727,206];[979,206];[979,261];[727,261]", "value":70},
-	{"ID":"15", "link":"http://google.com/?q=Entertainment &amp; Wedding Centre", "name":"Entertainment & Wedding Centre", "coordinates":"[569,425];[678,425];[678,464];[569,464]", "value":75},
+	{"ID":"15", "link":"http://google.com/?q=Entertainment & Wedding Centre", "name":"Entertainment & Wedding Centre", "coordinates":"[569,425];[678,425];[678,464];[569,464]", "value":75},
 	{"ID":"16", "link":"http://google.com/?q=Amphitheatre", "name":"Amphitheatre", "coordinates":"[459,217];[535,217];[591,300];[403,299]", "value":80},
 	{"ID":"17", "link":"http://google.com/?q=Shuffleboard Court", "name":"Shuffleboard Court", "coordinates":"[334,436];[450,436];[450,464];[334,464]", "value":85},
 	{"ID":"18", "link":"http://google.com/?q=Volleyball Court", "name":"Volleyball Court", "coordinates":"[81,390];[214,390];[214,463];[81,463]", "value":90},

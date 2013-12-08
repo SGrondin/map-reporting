@@ -28,6 +28,7 @@ class exports.Node
 		@
 
 	toString: (indent=0) -> # Recursively build the XML tree by calling toString on the children nodes
+		if @type == "path" and @attributes.name? then @attributes.name = mapUtils.toHTML @attributes.name
 		ret = mapUtils.strRepeat("\t", indent)+"<"+@type+(" "+k+"=\""+v+"\"" for k,v of @attributes).join("")
 		if @inner.length > 0 or @cdata.length > 0 or @children.length > 0
 			ret += ">"+@inner+@cdata+
@@ -41,10 +42,10 @@ class exports.Node
 		if @inner.length > 0 then el.appendChild document.createTextNode @inner
 		if @cdata.length > 0 and @type != "script" then el.appendChild document.createTextNode @cdata
 		for k,v of @attributes
-			if k != "xlink:href"
-				el.setAttribute k, v
-			else
+			if k == "xlink:href"
 				el.setAttributeNS('http://www.w3.org/1999/xlink', k, v)
+			else
+				el.setAttribute k, v
 		for c in @children
 			c.toDOM el
 		addTo.appendChild el
