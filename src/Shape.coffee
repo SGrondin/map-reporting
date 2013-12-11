@@ -4,7 +4,7 @@ geometry = require "./geometry"
 
 class exports.Shape
 	constructor: (@id, @link, @name, @val, @d="") -> # @d can be passed already compiled
-		@link = encodeURI @link
+		@link = (encodeURI @link).replace /&/g, "%26"
 		@nextInstruction = "M "
 		@coordinates = [] # Basic coordinates, used to find the shape's center
 		pair = "\[[0-9]{1,5}(\.[0-9]{1,5})?,[0-9]{1,5}(\.[0-9]{1,5})?\]"

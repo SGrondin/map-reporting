@@ -110,7 +110,7 @@ Drawing a rectangle is as easy as ```[x1,y1];[x2,y2];[x3,y3];[x4,y4]```
 
 Each coordinate is separated by ```;```.
 
-If a zone is made of 2 distinct parts, separate each part by ```;;;```.
+If a zone is made of 2 distinct parts, separate each part by ```;;;```. [Look at Zone 8 for an example of a multipart zone.](http://simongrondin.name/files/map-reporting/map2.svg)
 
 There's 2 types of advanced coordinates: arcs and pies.
 
@@ -259,9 +259,8 @@ zones
 	{"ID":"5", "link":"http://google.com/?q=Pocomania Gift Shop", "name":"Pocomania Gift Shop", "coordinates":"[727,425];[823,425];[823,480];[727,480]", "value":30},
 	{"ID":"6", "link":"http://google.com/?q=Bay Window Restaurant", "name":"Bay Window Restaurant", "coordinates":"[1137,318];[1234,318];[1234,481];[1137,481]", "value":35},
 	{"ID":"7", "link":"http://google.com/?q=The Carlyle Restaurant", "name":"The Carlyle Restaurant", "coordinates":"[405,300];[592,300];[546,328];[546,381];[451,381];[451,328];[405,300]", "value":40},
-	{"ID":"8", "link":"http://google.com/?q=Nibbles", "name":"Nibbles", "coordinates":"pie[[449,382],[367,312],[403,355]];pie[[360,288],[375,280],[356,259]];pie[[383,303],[403,299],[403,355]];[449,325]", "value":45},
+	{"ID":"8-10", "link":"http://google.com/?q=Nibbles & Sunset Bar", "name":"Nibbles & Sunset Bar", "coordinates":"pie[[449,382],[367,312],[403,355]];pie[[360,288],[375,280],[356,259]];pie[[383,303],[403,299],[403,355]];[449,325];;;[546,325];pie[[592,299],[546,383],[592,355]]", "value":45},
 	{"ID":"9", "link":"http://google.com/?q=Bay Window Bar", "name":"Bay Window Bar", "coordinates":"[1086,318];[1139,318];[1139,481];[1086,481]", "value":50},
-	{"ID":"10", "link":"http://google.com/?q=Sunset Bar", "name":"Sunset Bar", "coordinates":"[546,325];pie[[592,299],[546,383],[592,355]]", "value":55},
 	{"ID":"11", "link":"http://google.com/?q=Freshwater Pool", "name":"Freshwater Pool", "coordinates":"[899,359];[1061,358];arc[[1061,373],[1061,422],[1086,397.5]];[1061,437];[899,437];arc[[899,425],[899,371],[918,398]]", "value":60},
 	{"ID":"12", "link":"http://google.com/?q=Whirlpool", "name":"Whirlpool", "coordinates":"arc[[899,371],[899,425],[918,398]];arc[[899,425],[899,371],[878,398]]", "value":65},
 	{"ID":"13", "link":"http://google.com/?q=Public Beach", "name":"Public Beach", "coordinates":"[0,521];[1104,521];[1389,648];[1389,918];[0,918]", "value":69},
