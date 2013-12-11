@@ -6,16 +6,23 @@ Shape = (require "./Shape").Shape
 css = (require "./embeddedCSS").css
 
 shapeFromZone = (zone, config) ->
-	shape = new Shape zone.ID, zone.link, zone.name, zone.value
-	zone.coordinates.split(";").forEach (vector) ->
-		shape.addVector vector, config.background.x, config.background.y
+	# TODO: Maybe validate zone.ID, it needs to be alphanumeric?
+	# TODO: Maybe validate zone.coordinates with regex?
+	if ";" in zone.coordinates
+		shape = new Shape zone.ID, zone.link, zone.name, zone.value
+		zone.coordinates.split(";;;").forEach (s) ->
+			s.split(";").forEach (vector) ->
+				shape.addVector vector, config.background.x, config.background.y
+			shape.resetNextInstruction() # Move the pencil over to the next part of the zone
+	else
+		shape = new Shape zone.ID, zone.link, zone.name, zone.value, zone.coordinates
 	shape
 
 # Config must be an object, Shapes is an array of strings
 exports.generateMap = (config, zones) ->
 	svg = new SVG()
 	svg.setAttributes {width:config.width, height:config.height}
-	# Sets the CDATA of the <script> tag. Ignored on the client side.
+	# Sets the CDATA of the <script> tag. Ignored on the client side (in Node.toDOM).
 	svg.setEmbeddedJS embeddedJS.getEmbeddedJS config.labels
 
 	# Bitmap background
@@ -68,13 +75,13 @@ exports.generateMap = (config, zones) ->
 	if config.scale.showNumbers
 		scaleNumbers = new Node svg, "g"
 		n1 = new Node scaleNumbers, "text", "0"
-		n1.setAttributes {x:config.scale.x, y:(config.scale.y+config.scale.height+14), class:"scaleNumber"}
+		n1.setAttributes {x:config.scale.x, y:(config.scale.y+config.scale.height+14), class:"scaleNumbers"}
 		n2 = new Node scaleNumbers, "text", config.threshold+""
 		n2.setAttributes {x:(config.scale.x+halfDown), y:(config.scale.y+config.scale.height+14),\
-			class:"scaleNumber"}
+			class:"scaleNumbers"}
 		n3 = new Node scaleNumbers, "text", "100"
 		n3.setAttributes {x:(config.scale.x+config.scale.width), y:(config.scale.y+config.scale.height+14),\
-			class:"scaleNumber"}
+			class:"scaleNumbers"}
 
 	# Dashboard elements
 	rectangle = new Node svg, "rect"
@@ -95,6 +102,7 @@ exports.generateMap = (config, zones) ->
 	dashboardLinkText.setAttributes {x:config.dashboard.x+10, y:config.dashboard.y+66, id:"dashboardLinkText"}
 
 	# CSS
+	if config.styling?.length > 0 then css += ("\n"+config.styling)
 	svg.setEmbeddedCSS css
 
 	svg

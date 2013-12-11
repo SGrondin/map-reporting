@@ -3,18 +3,23 @@ mapUtils = require "./mapUtils"
 geometry = require "./geometry"
 
 class exports.Shape
-	constructor: (@id, @link, @name, @val) ->
+	constructor: (@id, @link, @name, @val, @d="") -> # @d can be passed already compiled
 		@link = encodeURI @link
-		# @name = mapUtils.toHTML @name
+		@nextInstruction = "M "
 		@coordinates = [] # Basic coordinates, used to find the shape's center
-		@d = ""
 		pair = "\[[0-9]{1,5}(\.[0-9]{1,5})?,[0-9]{1,5}(\.[0-9]{1,5})?\]"
 		@regexes =
 			arc : new RegExp "^arc\["+pair+","+pair+","+pair+"\]$"
 			pie : new RegExp "^pie\["+pair+","+pair+","+pair+"\]$"
 
-	firstInstruction: () ->
-		if @coordinates.length == 0 then "M " else "L "
+	resetNextInstruction: () ->
+		@nextInstruction = "M "
+		@d += "Z "
+
+	addInstruction: () ->
+		ret = @nextInstruction
+		@nextInstruction = "L "
+		ret
 
 	addVector: (vector, dx, dy) ->
 		if @regexes.arc.test vector then @.addArc vector[3..], dx, dy
@@ -26,7 +31,7 @@ class exports.Shape
 		try
 			[x, y] = JSON.parse vector
 			[x, y] = [x+dx, y+dy]
-			@d += @firstInstruction()+x+" "+y+" "
+			@d += @addInstruction()+x+" "+y+" "
 			@coordinates.push [x, y]
 		catch err
 			console.log "Can't parse "+vector
@@ -38,10 +43,10 @@ class exports.Shape
 			[[xa, ya], [xb, yb], [xc, yc]] = (JSON.parse vector).map ([x, y]) -> [x+dx, y+dy]
 			try
 				{r1, r2, xcenter, ycenter, angle, sweep} = geometry.calculateEllipse xa, ya, xb, yb, xc, yc
-				@d += @firstInstruction()+xa+" "+ya+" A "+r1+" "+r2+" "+(-angle)+" 0 "+sweep+" "+xb+" "+yb+" "
+				@d += @addInstruction()+xa+" "+ya+" A "+r1+" "+r2+" "+(-angle)+" 0 "+sweep+" "+xb+" "+yb+" "
 			catch err
 				# Draw lines instead if it failed due to bad coordinates
-				@d += @firstInstruction()+xa+" "+ya+" L "+xc+" "+yc+" L "+xb+" "+yb
+				@d += @addInstruction()+xa+" "+ya+" L "+xc+" "+yc+" L "+xb+" "+yb+" "
 			@coordinates.push [xa, ya], [xb, yb]
 		catch err
 			console.log "Can't parse "+vector
@@ -52,7 +57,7 @@ class exports.Shape
 		try
 			[[xa, ya], [xb, yb], [xc, yc]] = (JSON.parse vector).map ([x, y]) -> [x+dx, y+dy]
 			{r, large} = geometry.calculatePie xa, ya, xb, yb, xc, yc
-			@d += @firstInstruction()+xa+" "+ya+" A "+r+" "+r+" 0 "+large+" 1 "+xb+" "+yb+" "
+			@d += @addInstruction()+xa+" "+ya+" A "+r+" "+r+" 0 "+large+" 1 "+xb+" "+yb+" "
 			@coordinates.push [xa, ya], [xb, yb], [xc, yc]
 		catch err
 			console.log "Can't parse "+vector
@@ -74,7 +79,7 @@ class exports.Shape
 	addToSVG: (svg, config) ->
 		# Create node and set its attributes
 		node = new Node svg, "path"
-		node.setAttributes {id:@id, name:@name, link:@link, d:@d+"Z"}
+		node.setAttributes {id:@id, name:@name, link:@link, d:@d.trim()}
 
 		# Generate and add color attributes
 		if @val? and @val != "" and config.threshold? and config.threshold != "" and (0 <= @val <= 100) and (0 <= config.threshold <= 100)

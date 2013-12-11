@@ -8,6 +8,7 @@ Low resolution static preview:
 
 [Click here for a high resolution interative example.](http://simongrondin.name/files/map-reporting/map2.svg) The scale is clickable.
 
+This library was developed at [Benbria](http://www.benbria.com/), it's a great place to work and they actively contribute to open source software.
 
 ## Installation
 
@@ -73,7 +74,8 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 	"labels":{
 		"value":"Satisfaction: ",    // The value's label in the dashboard
 		"link":"View data"           // Link text
-	}
+	},
+	"styling":""                     // Embedded CSS customizations. Must be valid CSS. Will override defaults. See also the Styling section of this README
 }
 ```
 
@@ -95,6 +97,8 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 
 All the fields are strings except for ```value```.
 
+ID must be ```[A-Za-z\-_]+```.
+
 Value must be between 0 and 100. To indicate lack of data, enter -1 or an empty string.
 
 
@@ -105,6 +109,8 @@ Enter the coordinates of each zone in a clock-wise order.
 Drawing a rectangle is as easy as ```[x1,y1];[x2,y2];[x3,y3];[x4,y4]```
 
 Each coordinate is separated by ```;```.
+
+If a zone is made of 2 distinct parts, separate each part by ```;;;```.
 
 There's 2 types of advanced coordinates: arcs and pies.
 
@@ -126,9 +132,17 @@ pie[[startx,starty],[endx,endy],[centerx,centery]]
 A pie is a circle (or part of a circle) drawn from the start point to the end point with the specified center point.
 
 
+##### Raw
+
+It's also possible to simply enter [raw SVG path "d-attribute" code](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths?redirectlocale=en-US&redirectslug=SVG%2FTutorial%2FPaths) instead of using the syntax described above.
+
+`M 899 359 L 1061 358 L 1061 373 A 24.5 25 -90 0 1 1061 422 L 1061 437 L 899 437 L 899 425 A 27 19 -90 0 0 899 371 Z`
+is equivalent to
+`[899,359];[1061,358];arc[[1061,373],[1061,422],[1086,397.5]];[1061,437];[899,437];arc[[899,425],[899,371],[918,398]]`
+
 ## Styling
 
-The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page.
+The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page and/or by passing valid CSS code into `config.styling` .
 
 
 ## Examples
@@ -170,7 +184,8 @@ config
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"
-	}
+	},
+	"styling":""
 }
 ```
 
@@ -228,7 +243,8 @@ config
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"
-	}
+	},
+	"styling":""
 }
 ```
 

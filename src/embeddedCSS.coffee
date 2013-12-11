@@ -21,7 +21,11 @@ exports.css = """
 		.stop2 {
 			stop-opacity : 0.85;
 		}
-		.scaleNumber {
+		.scaleNumbers {
+			font-weight: bold;
+			font-size:18;
+			fill:#000000;
+			stroke:#FFFFFF;
 			-webkit-user-select : none;
 			-moz-user-select : none;
 			-ms-user-select : none;
