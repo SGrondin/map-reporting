@@ -181,8 +181,11 @@
       return "<?xml version=\"1.0\" standalone=\"no\"?>\n" + this.head.toString(0);
     };
 
-    SVG.prototype.toDOM = function(containerID) {
-      this.head.toDOM(document.getElementById(containerID));
+    SVG.prototype.toDOM = function(container) {
+      if (typeof container === "string") {
+        container = document.getElementById(container);
+      }
+      this.head.toDOM(container);
       return this;
     };
 
@@ -420,7 +423,7 @@
     var embedded, k, scope, v;
     scope = module.exports.setClientScope({}, labels);
     embedded = "\n<![CDATA[\n";
-    embedded += "var scope = mapReporting = {";
+    embedded += "var mapReporting = {";
     for (k in scope) {
       v = scope[k];
       embedded += "\n" + k + " : ";

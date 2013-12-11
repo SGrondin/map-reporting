@@ -1,7 +1,7 @@
 exports.getEmbeddedJS = (labels) ->
 	scope = module.exports.setClientScope {}, labels
 	embedded = "\n<![CDATA[\n"
-	embedded += "var scope = mapReporting = {"
+	embedded += "var mapReporting = {"
 	for k,v of scope
 		embedded += "\n"+k+" : "
 		embedded += if v? and typeof v == "function"

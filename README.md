@@ -33,9 +33,9 @@ svg = mapReporting.generateMap(config, zones).toString();
 
 ####Client
 ```javascript
-mapReporting.generateMap(config, zones).toDOM(elementID);
+mapReporting.generateMap(config, zones).toDOM(container);
 ```
-* elementID is the id of the element in which the SVG will created. No '#', just the name, like "mydiv".
+* ```container``` is a reference to the DOM element in which the SVG will be created. It's also possible to pass a string with the element's ID without '#'.
 
 ### Config
 
@@ -43,39 +43,40 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 
 ```json
 {
-	"width":800,                     // SVG file width
-	"height":700,                    // SVG file height
+	"width":800,                      // SVG file width
+	"height":700,                     // SVG file height
 	"background":{
-		"width":800,                 // Background bitmap width
-		"height":531,                // Background bitmap height
-		"x":0,                       // Background bitmap top left corner x
-		"y":160,                     // Background bitmap top left corner y
-		"saturation":1.0,            // Background bitmap color saturation (0 to 1)
-		"url":null,                  // Put the URL of the background image here, or null to ignore
-		"base64":"/9j/4AAQSkZJRg..." // Put the base64 encoded JPG or PNG of the background image or null to ignore
+		"width":800,                  // Background bitmap width
+		"height":531,                 // Background bitmap height
+		"x":0,                        // Background bitmap top left corner x
+		"y":160,                      // Background bitmap top left corner y
+		"saturation":1.0,             // Background bitmap color saturation (0 to 1)
+		"url":null,                   // Put the URL of the background image here, or null to ignore
+		"base64":"/9j/4AAQSkZJRg..."  // Put the base64 encoded JPG or PNG of the background image or null to ignore
 	},
 	"dashboard":{
-		"x":10,                      // Dashboard top left corner x
-		"y":10,                      // Dashboard top left corner y
-		"width":480,                 // Dashboard width
-		"height":150                 // Dashboard height
+		"x":10,                       // Dashboard top left corner x
+		"y":10,                       // Dashboard top left corner y
+		"width":480,                  // Dashboard width
+		"height":150                  // Dashboard height
 	},
 	"scale":{
-		"initial":"green",           // Scale default color: "green" or "blue"
-		"alternate":"blue",          // Scale second color: "green" or "blue"
-		"width":240,                 // Scale width
-		"height":20,                 // Scale height
-		"x":500,                     // Scale top left corner x
-		"y":10,                      // Scale top right corner y
-		"showNumbers":false          // Show numbers on the scale
+		"initial":"green",            // Scale default color: "green" or "blue"
+		"alternate":"blue",           // Scale second color: "green" or "blue"
+		"width":240,                  // Scale width
+		"height":20,                  // Scale height
+		"x":500,                      // Scale top left corner x
+		"y":10,                       // Scale top right corner y
+		"showNumbers":false           // Show numbers on the scale
 	},
-	"threshold":70,                  // Values above the threshold are considered good
+	"threshold":70,                   // Values above the threshold are considered good
 	"showIDs":true,
 	"labels":{
-		"value":"Satisfaction: ",    // The value's label in the dashboard
-		"link":"View data"           // Link text
+		"value":"Satisfaction: ",     // The value's label in the dashboard
+		"link":"View data"            // Link text
 	},
-	"styling":""                     // Embedded CSS customizations. Must be valid CSS. Will override defaults. See also the Styling section of this README
+	"styling":
+		".scaleNumbers{fill:#00FF00;}"// Embedded CSS customizations. Must be valid CSS. Will override defaults. See also the Styling section of this README
 }
 ```
 
@@ -97,7 +98,7 @@ mapReporting.generateMap(config, zones).toDOM(elementID);
 
 All the fields are strings except for ```value```.
 
-ID must be ```[A-Za-z\-_]+```.
+ID must begin with a letter ([A-Za-z]) and may be followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
 
 Value must be between 0 and 100. To indicate lack of data, enter -1 or an empty string.
 

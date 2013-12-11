@@ -35,6 +35,7 @@ class exports.SVG
 	toString: () ->
 		"<?xml version=\"1.0\" standalone=\"no\"?>\n"+@head.toString(0)
 
-	toDOM: (containerID) ->
-		@head.toDOM document.getElementById containerID
+	toDOM: (container) ->
+		if typeof container == "string" then container = document.getElementById container
+		@head.toDOM container
 		@
