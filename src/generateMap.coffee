@@ -3,7 +3,7 @@ mapUtils = require "./mapUtils"
 SVG = (require "./SVG").SVG
 Node = (require "./Node").Node
 Shape = (require "./Shape").Shape
-css = (require "./embeddedCSS").css
+defaultCSS = (require "./embeddedCSS").defaultCSS
 
 shapeFromZone = (zone, config) ->
 	# TODO: Maybe validate zone.ID, it needs to be alphanumeric?
@@ -25,7 +25,7 @@ exports.generateMap = (config, zones) ->
 	# Sets the CDATA of the <script> tag. Ignored on the client side (in Node.toDOM).
 	svg.setEmbeddedJS embeddedJS.getEmbeddedJS config.labels
 
-	# Bitmap background
+	### Bitmap background ###
 	if config.background.url?.length > 0 or config.background.base64?.length > 0
 		bg = new Node svg, "image"
 		image = if config.background.base64?.length > 0
@@ -36,29 +36,30 @@ exports.generateMap = (config, zones) ->
 			x:config.background.x, y:config.background.y, height:config.background.height, width:config.background.width,\
 			filter:"url(#fdesaturation)"}
 
-	# Adds shapes to SVG
+	### Adds shapes to SVG ###
 	for zone in zones
 		(shapeFromZone zone, config).addToSVG svg, config
 
-	# Fill pattern
+	### Fill pattern ###
 	pattern = new Node null, "pattern"
 	pattern.setAttributes {width:"10", height:"10", patternUnits:"userSpaceOnUse"}
 	innerPattern = new Node pattern, "path"
 	innerPattern.setAttributes {class:"nodatapattern", d:"M 0 10 L 10 0 Z"}
 	svg.addDef pattern, "dashed"
 
-	# Desaturation filter
+	### Desaturation filter ###
 	desaturation = new Node null, "filter"
 	desaturation.setAttributes {x:0, y:0}
 	desaturationFilter = new Node desaturation, "feColorMatrix"
 	desaturationFilter.setAttributes {in:"SourceGraphic", type:"saturate", values:config.background.saturation}
 	svg.addDef desaturation, "desaturation"
 
-	# Scale
+	### Scale ###
 	scale = new Node svg, "g"
 	scale.setAttributes {onmousedown:"mapReporting.changeScaleColor(evt);"}
 	halfUp = Math.floor(config.scale.width*(~~config.threshold)/100)
 	halfDown = halfUp+1
+	# Remember that inlined SVGs on Firefox needs all attributes in lowercase
 	for i in [0..halfUp]
 		value = i/(halfUp/100)
 		line = new Node scale, "path"
@@ -71,7 +72,7 @@ exports.generateMap = (config, zones) ->
 			" L "+(config.scale.x+i)+" "+config.scale.y+" Z"
 		initialColor = mapUtils.getColor(value, config.scale.initial, false)
 		alternateColor = mapUtils.getColor(value, config.scale.alternate, false)
-		line.setAttributes {d, stroke:initialColor, initialColor, alternateColor, class:"good"}
+		line.setAttributes {d, stroke:initialColor, initialcolor:initialColor, alternatecolor:alternateColor, class:"good"}
 	if config.scale.showNumbers
 		scaleNumbers = new Node svg, "g"
 		n1 = new Node scaleNumbers, "text", "0"
@@ -83,7 +84,7 @@ exports.generateMap = (config, zones) ->
 		n3.setAttributes {x:(config.scale.x+config.scale.width), y:(config.scale.y+config.scale.height+14),\
 			class:"scaleNumbers"}
 
-	# Dashboard elements
+	### Dashboard elements ###
 	rectangle = new Node svg, "rect"
 	rectangle.setAttributes {x:config.dashboard.x, y:config.dashboard.y, width:config.dashboard.width,\
 		height:config.dashboard.height, id:"dashboardRectangle"}
@@ -101,8 +102,7 @@ exports.generateMap = (config, zones) ->
 	dashboardLinkText = new Node dashboardLink, "text", " "
 	dashboardLinkText.setAttributes {x:config.dashboard.x+10, y:config.dashboard.y+66, id:"dashboardLinkText"}
 
-	# CSS
-	if config.styling?.length > 0 then css += ("\n"+config.styling)
-	svg.setEmbeddedCSS css
+	### CSS ###
+	svg.setEmbeddedCSS defaultCSS, config.styling
 
 	svg

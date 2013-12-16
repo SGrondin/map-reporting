@@ -88,6 +88,7 @@ class exports.Shape
 				blue : mapUtils.getColor ((@val-config.threshold)/(100-config.threshold)*100), "blue", false
 				red : mapUtils.getColor (@val/config.threshold*100), "red", true
 			}
+			# Remember that inlined SVGs on Firefox needs all attributes in lowercase
 			if @val > config.threshold
 				node.setAttributes {class:"zone good"}
 				initialColor = colors[config.scale.initial]
@@ -95,8 +96,8 @@ class exports.Shape
 				stroke = initialColor
 				initialFilter = svg.addDef (@createFilter initialColor, initialColor), @id+"initial"
 				alternateFilter = svg.addDef (@createFilter alternateColor, alternateColor), @id+"alternate"
-				node.setAttributes {"fill":"url(#"+initialFilter+")", initialFilter, alternateFilter,\
-					initialColor, alternateColor}
+				node.setAttributes {"fill":"url(#"+initialFilter+")", initialfilter:initialFilter,\
+					alternatefilter:alternateFilter, initialcolor:initialColor, alternatecolor:alternateColor}
 			else
 				node.setAttributes {class:"zone bad"}
 				stroke = colors.red

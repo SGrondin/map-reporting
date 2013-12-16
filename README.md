@@ -1,7 +1,7 @@
 map-reporting
 =============
 
-Generate SVG images with interactive areas to display geographic data. Map-reporting works on the server or on the client: either generate SVG files on the server or let it build the SVG inside any div-like HTML element.
+Generate SVG images with interactive areas to display geographic data. Map-reporting is available for both Node.js and the browser: either generate SVG files on the server or let it build an SVG inside any div-like HTML element.
 
 Low resolution static preview:
 <img src="http://simongrondin.name/files/map-reporting/map2preview.png" />
@@ -12,30 +12,32 @@ This library was developed at [Benbria](http://www.benbria.com/), it's a great p
 
 ## Installation
 
-####Server
+####Node.js
 ```
 npm install map-reporting
 ```
 
-####Client
+####Browser
 ```html
 <script type="text/javascript" src="map-reporting.min.js"></script>
 ```
 
 ## Usage
 
-####Server
+####Node.js
 ```javascript
 var mapReporting = require("map-reporting");
 
 svg = mapReporting.generateMap(config, zones).toString();
 ```
 
-####Client
+####Browser
 ```javascript
-mapReporting.generateMap(config, zones).toDOM(container);
+mapReporting.generateMap(config, zones).toDOM("container");
 ```
-* ```container``` is a reference to the DOM element in which the SVG will be created. It's also possible to pass a string with the element's ID without '#'.
+* ```container``` is a string with the element's ID (without '#') of the element in which the SVG will be generated.
+
+map-reporting seamlessly handles multiple maps in the same page, in any combination of inlined, linked and created on-the-fly maps. It doesn't pollute the page's JavaScript or CSS.
 
 ### Config
 
@@ -75,8 +77,7 @@ mapReporting.generateMap(config, zones).toDOM(container);
 		"value":"Satisfaction: ",     // The value's label in the dashboard
 		"link":"View data"            // Link text
 	},
-	"styling":
-		".scaleNumbers{fill:#00FF00;}"// Embedded CSS customizations. Must be valid CSS. Will override defaults. See also the Styling section of this README
+	"styling":{}                      // Embedded CSS customizations. See the Styling section of this README for syntax
 }
 ```
 
@@ -137,13 +138,28 @@ A pie is a circle (or part of a circle) drawn from the start point to the end po
 
 It's also possible to simply enter [raw SVG path "d-attribute" code](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths?redirectlocale=en-US&redirectslug=SVG%2FTutorial%2FPaths) instead of using the syntax described above.
 
-`M 899 359 L 1061 358 L 1061 373 A 24.5 25 -90 0 1 1061 422 L 1061 437 L 899 437 L 899 425 A 27 19 -90 0 0 899 371 Z`
-is equivalent to
-`[899,359];[1061,358];arc[[1061,373],[1061,422],[1086,397.5]];[1061,437];[899,437];arc[[899,425],[899,371],[918,398]]`
+Example of "d-attribute code":
+``M 899 359 L 1061 358 L 1061 373 A 24.5 25 -90 0 1 1061 422 L 1061 437 L 899 437 L 899 425 A 27 19 -90 0 0 899 371 Z```
 
 ## Styling
 
-The maps can be further customized with CSS. The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page and/or by passing valid CSS code into `config.styling` .
+The maps can be further customized with CSS.
+
+The default values in embeddedCSS.coffee can be overriden with a ```<style>``` tag in your HTML page. Every map is part of the class ```.mapReporting``` .
+
+It is also possible to embed CSS into the SVG itself by passing a JSON object having the following structure into ```config.styling``` :
+
+```javascript
+{
+	"#myselector .abc" : {
+		"stroke" : "#00FF00",
+		"stroke-width" : 3
+	},
+	"path .thisisanotherselector" : {
+		"some-key" : "somevalue"
+	}
+}
+```
 
 
 ## Examples
@@ -185,8 +201,7 @@ config
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"
-	},
-	"styling":""
+	}
 }
 ```
 
@@ -244,8 +259,7 @@ config
 	"labels":{
 		"value":"Satisfaction: ",
 		"link":"View data"
-	},
-	"styling":""
+	}
 }
 ```
 
