@@ -38,8 +38,14 @@ class exports.SVG
 		@style.setCDATA @css.defaultCSS+"\n"+(mapUtils.buildCSS @css.styling)
 		"<?xml version=\"1.0\" standalone=\"no\"?>\n"+@head.toString(0)
 
-	toDOM: (containerID) ->
-		container = document.getElementById containerID
+	toDOM: (refOrID) ->
+		container = if typeof refOrID == "string" then document.getElementById refOrID else refOrID
+		if container.getAttribute("id")?
+			containerID = container.getAttribute("id")
+		else
+			containerID = "mapReporting"+Math.round(Math.random()*99999999)
+			container.setAttribute "id", containerID
+
 		@style.setCDATA @css.defaultCSS+"\n"+(mapUtils.buildCSS @css.styling, containerID)
 		@head.toDOM container
 		@

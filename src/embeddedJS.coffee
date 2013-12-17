@@ -44,10 +44,7 @@ exports.setClientScope = (scope, labels) ->
 	scope.putOnTop = (shape) ->
 		@head.appendChild(shape)
 		id = @head.querySelector "#id"+shape.getAttribute("id")
-		if id?
-			@head.appendChild(id)
-		else
-			console.log shape.getAttribute "id"
+		if id? then @head.appendChild(id)
 	scope.putSelectedOnTop = () ->
 		@putOnTop selected for selected in @toArray @head.querySelectorAll ".selected"
 
