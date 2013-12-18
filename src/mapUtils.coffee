@@ -1,3 +1,5 @@
+exports.hash = (str) -> (str.split("").reduce ((a,b)-> a=((a<<5)-a)+b.charCodeAt(0);a&a), 0)>>>0
+
 exports.strRepeat = (str, nb) ->
 	new Array(nb+1).join(str)
 
@@ -38,11 +40,11 @@ exports.getColor = (val, color, invert=false) ->
 		# console.log val+" "+r+" "+g+" "+b
 	"#"+lpad(Math.round(r).toString(16), "0", 2)+lpad(Math.round(g).toString(16), "0", 2)+lpad(Math.round(b).toString(16), "0", 2)
 
-exports.buildCSS = (styling, containerID) ->
-	container = if containerID? then "#"+containerID+" " else ""
+exports.buildCSS = (styling, id) ->
+	container = "#"+id
 	if styling?
 		css = for own selector,style of styling
-			container+selector+" {\n"+("\t"+k+" : "+v+";" for own k,v of style).join("\n")+"\n}\n"
+			container+" "+selector+" {\n"+("\t"+k+" : "+v+";" for own k,v of style).join("\n")+"\n}\n"
 		css.join "\n"
 	else
 		""
