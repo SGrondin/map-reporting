@@ -6,7 +6,8 @@ class exports.SVG
 		@head = new Node null, "svg"
 		@head.setAttributes {class:"mapReporting", version:"1.1", baseProfile:"full",\
 			xmlns:"http://www.w3.org/2000/svg", "xmlns:xlink":"http://www.w3.org/1999/xlink",\
-			id:"mapReporting"+mapUtils.hash(JSON.stringify(config)+JSON.stringify(zones))+"_"+Math.round(Math.random()*99999999)
+			id:"mapReporting"+mapUtils.hash(JSON.stringify(config)+JSON.stringify(zones))+"_"+Math.round(Math.random()*99999999),
+			width:config.width, height:config.height, viewBox:"0 0 "+config.width+" "+config.height, preserveAspectRatio:"XMidYMid meet"
 		}
 		@defs = new Node @head, "defs"
 		@script = new Node @head, "script"
@@ -32,8 +33,7 @@ class exports.SVG
 		@
 
 	setAttributes: (obj) ->
-		for k,v of obj
-			@head.attributes[k] = v
+		@head.setAttributes obj
 		@
 
 	toString: () ->

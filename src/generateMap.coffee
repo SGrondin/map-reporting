@@ -21,7 +21,6 @@ shapeFromZone = (zone, config) ->
 # Config must be an object, Shapes is an array of strings
 exports.generateMap = (config, zones) ->
 	svg = new SVG(config, zones)
-	svg.setAttributes {width:config.width, height:config.height}
 	# Sets the CDATA of the <script> tag. Ignored on the client side (in Node.toDOM).
 	svg.setEmbeddedJS embeddedJS.getEmbeddedJS config.labels
 
