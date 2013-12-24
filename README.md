@@ -34,10 +34,12 @@ svg = mapReporting.generateMap(config, zones).toString();
 ####Browser
 ```javascript
 mapReporting.generateMap(config, zones).toDOM(container);
+// or
+document.getElementById("mydiv").innerHTML = mapReporting.generateMap(config, zones).toString();
 ```
 * ```container``` is a reference or the id (string without the '#') of the element in which the SVG will be generated
 
-map-reporting seamlessly handles multiple maps in the same page, in any combination of inlined, linked and created on-the-fly maps. It doesn't pollute the page's JavaScript or CSS.
+map-reporting seamlessly handles multiple maps on the same page, in any combination of inlined, linked and generated-on-the-fly. It doesn't pollute the page's JavaScript or CSS.
 
 ### Config
 
