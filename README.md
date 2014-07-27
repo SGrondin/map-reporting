@@ -18,6 +18,10 @@ npm install map-reporting
 ```
 
 ####Browser
+```
+bower install map-reporting
+```
+or
 ```html
 <script type="text/javascript" src="map-reporting.min.js"></script>
 ```

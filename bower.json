@@ -1,0 +1,30 @@
+{
+  "name": "map-reporting",
+  "main": "map-reporting.js",
+  "version": "0.11.4",
+  "homepage": "https://github.com/SGrondin/map-reporting",
+  "authors": [
+    "SGrondin <github@simongrondin.name>"
+  ],
+  "description": "Generate SVG images with interactive areas to display geographic data",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "map",
+    "svg",
+    "heat",
+    "zones",
+    "areas",
+    "interactive",
+    "reporting",
+    "statistics",
+    "stats"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
+}
