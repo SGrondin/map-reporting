@@ -1,4 +1,8 @@
 exports.defaultCSS = """
+		.mapReporting #defaultBackground {
+			fill-opacity : 0.7;
+			fill : #E5E5E5;
+		}
 		.mapReporting rect {
 			fill-opacity : 0.7;
 			fill : #FFFFFF;

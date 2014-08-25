@@ -118,7 +118,7 @@ class exports.Shape
 			onmouseout:"mapReporting.shapeOut(evt);", onmousedown:"mapReporting.shapeDown(evt);"}
 
 		# Place id
-		if config.showIDs
+		if config.showIDs and @coordinates.length > 1
 			[x, y] = @findCenter()
 			y += 20 # Because the ID font size is quite big
 			id = new Node svg, "text", @id

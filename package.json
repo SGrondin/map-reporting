@@ -1,6 +1,6 @@
 {
   "name": "map-reporting",
-  "version": "0.11.4",
+  "version": "0.12.0",
   "description": "Generate SVG images with interactive areas to display geographic data",
   "main": "lib/index.js",
   "scripts": {

@@ -44,7 +44,7 @@ exports.buildCSS = (styling, id) ->
 	container = "#"+id
 	if styling?
 		css = for own selector,style of styling
-			container+" "+selector+" {\n"+("\t"+k+" : "+v+";" for own k,v of style).join("\n")+"\n}\n"
+			container+" "+selector+" {\n"+("\t"+k+":"+v+";" for own k,v of style).join("\n")+"\n}\n"
 		css.join "\n"
 	else
 		""

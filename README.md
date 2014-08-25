@@ -78,10 +78,11 @@ map-reporting seamlessly handles multiple maps on the same page, in any combinat
 		"showNumbers":false           // Show numbers on the scale
 	},
 	"threshold":70,                   // Values above the threshold are considered good
-	"showIDs":true,
+	"showIDs":true,                   // Show the zone IDs. Doesn't work for "raw d-coordinates"
 	"labels":{
 		"value":"Satisfaction: ",     // The value's label in the dashboard
-		"link":"View data"            // Link text
+		"link":"View data",           // Link text, null to disable
+		"defaultNoSelect":"Nothing selected" // Default dashboard text
 	},
 	"styling":{}                      // Embedded CSS customizations. See the Styling section of this README for syntax
 }
@@ -206,7 +207,8 @@ config
 	"showIDs":true,
 	"labels":{
 		"value":"Satisfaction: ",
-		"link":"View data"
+		"link":"View data",
+		"defaultNoSelect":"Nothing selected"
 	}
 }
 ```
@@ -264,7 +266,8 @@ config
 	"showIDs":false,
 	"labels":{
 		"value":"Satisfaction: ",
-		"link":"View data"
+		"link":"View data",
+		"defaultNoSelect":"Nothing selected"
 	}
 }
 ```

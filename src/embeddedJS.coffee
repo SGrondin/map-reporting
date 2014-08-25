@@ -33,10 +33,10 @@ exports.setClientScope = (scope, labels) ->
 		@head.querySelector("#dashboardTitle").firstChild.nodeValue = shape.getAttribute("id")+" "+shape.getAttribute("name")
 		@head.querySelector("#dashboardLink").setAttribute("xlink:href", shape.getAttribute("link").replace(/&/g, "%26"))
 		@head.querySelector("#dashboardLink").setAttribute("href", shape.getAttribute("link").replace(/&/g, "%26"))
-		@head.querySelector("#dashboardLinkText").firstChild.nodeValue = @labels.link
+		if @labels.link? then @head.querySelector("#dashboardLinkText").firstChild.nodeValue = @labels.link
 		@head.querySelector("#dashboardSatisfaction").firstChild.nodeValue = @labels.value+shape.getAttribute("value")
 	scope.emptyDashboard = () ->
-		@head.querySelector("#dashboardTitle").firstChild.nodeValue = "Nothing selected"
+		@head.querySelector("#dashboardTitle").firstChild.nodeValue = @labels.defaultNoSelect
 		@head.querySelector("#dashboardLinkText").firstChild.nodeValue = ""
 		@head.querySelector("#dashboardSatisfaction").firstChild.nodeValue = ""
 	scope.displaySelected = () ->

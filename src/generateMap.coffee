@@ -34,6 +34,9 @@ exports.generateMap = (config, zones) ->
 		bg.setAttributes {"xlink:href":image,\
 			x:config.background.x, y:config.background.y, height:config.background.height, width:config.background.width,\
 			filter:"url(#fdesaturation)"}
+	else
+		bg = new Node svg, "rect"
+		bg.setAttributes {"id":"defaultBackground", x:0, y:0, width:config.background.width, height:config.background.height}
 
 	### Adds shapes to SVG ###
 	for zone in zones
@@ -88,7 +91,7 @@ exports.generateMap = (config, zones) ->
 	rectangle.setAttributes {x:config.dashboard.x, y:config.dashboard.y, width:config.dashboard.width,\
 		height:config.dashboard.height, id:"dashboardRectangle"}
 
-	dashboardTitle = new Node svg, "text", "Nothing selected"
+	dashboardTitle = new Node svg, "text", config.labels.defaultNoSelect
 	dashboardTitle.setAttributes {x:config.dashboard.x+10, y:config.dashboard.y+16, id:"dashboardTitle"}
 
 	dashboardLink = new Node svg, "a"
